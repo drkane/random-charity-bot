@@ -1,3 +1,5 @@
+# adapted from https://github.com/OpenDataServices/grantnav/blob/master/dataload/fetch_charity_data.py
+
 from html.parser import HTMLParser
 import requests
 from io import StringIO
