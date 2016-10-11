@@ -50,3 +50,4 @@ Credits
 
 - Fetch charity data script adapted from <https://github.com/OpenDataServices/grantnav/blob/master/dataload/fetch_charity_data.py>
 - Twitter API use from <https://videlais.com/2015/03/02/how-to-create-a-basic-twitterbot-in-python/>
+- Charity data from <http://data.charitycommission.gov.uk/> - used under [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
