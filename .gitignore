@@ -1,0 +1,5 @@
+
+*.cfg
+!example.cfg
+*.json
+*.zip

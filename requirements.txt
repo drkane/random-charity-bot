@@ -1,0 +1,5 @@
+tweepy
+configparser
+titlecase
+requests
+html
