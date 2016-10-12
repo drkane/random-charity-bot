@@ -8,6 +8,7 @@ import os
 import csv
 import titlecase
 import json
+import configargparse
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 
