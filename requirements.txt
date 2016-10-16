@@ -2,4 +2,4 @@ tweepy
 configparser
 titlecase
 requests
-html
+configargparse
