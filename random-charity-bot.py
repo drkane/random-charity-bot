@@ -36,6 +36,7 @@ def get_charity_tweet(filename):
         return "{name} [{regno}] {website}".format(name=char["title"], regno=regno, website=char["website"])
 
 if __name__ == "__main__":
+    
     p = configargparse.ArgParser(ignore_unknown_config_file_keys=True)
     p.add('-c', '--my-config', required=True, default="example.cfg", is_config_file=True, help='config file path')
     
@@ -50,8 +51,19 @@ if __name__ == "__main__":
     
     # filename of charity data file
     p.add("-f", "--data-file", default="charity_names.json.gz", help="Location of charity data file")
-    
-    options = p.parse_args()
+
+    is_heroku = os.environ.get('IS_HEROKU', None)
+    if is_heroku:
+        options = p.parse_args([
+            '--consumer-key', os.environ.get('CONSUMER_KEY'),
+            '--consumer-secret', os.environ.get('CONSUMER_SECRET'),
+            '--access-token', os.environ.get('ACCESS_TOKEN'),
+            '--access-token-secret', os.environ.get('ACCESS_TOKEN_SECRET'),
+            '--sleep', os.environ.get('SLEEP'),
+            '-c', None,
+        ])
+    else:
+        options = p.parse_args()
     
     # connect to Twitter API
     twitter = TwitterAPI(vars(options))
