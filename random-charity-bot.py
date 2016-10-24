@@ -38,7 +38,7 @@ def get_charity_tweet(filename):
 if __name__ == "__main__":
     
     p = configargparse.ArgParser(ignore_unknown_config_file_keys=True)
-    p.add('-c', '--my-config', required=True, default="example.cfg", is_config_file=True, help='config file path')
+    p.add('-c', '--my-config', default="example.cfg", is_config_file=True, help='config file path')
     
     # Twitter connection details
     p.add('--consumer-key', help='Twitter authorisation: consumer key')
