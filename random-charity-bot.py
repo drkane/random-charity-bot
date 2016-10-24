@@ -4,6 +4,7 @@ import os
 import time
 import tweepy
 import configargparse
+import gzip
 from datetime import datetime
 
 # connect to twitter API and tweet
@@ -21,7 +22,7 @@ class TwitterAPI:
 # returns a formatted tweet
 def get_charity_tweet(filename):
 
-    with open(filename, "r") as c:
+    with gzip.open(filename, "r") as c:
         chars = json.load(c)
         regno = random.choice(list(chars.keys()))
         char = chars[regno]
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     p.add('-s', '--sleep', default=3600, type=int, help='Time to sleep between tweets (in seconds - default is one hour)')
     
     # filename of charity data file
-    p.add("-f", "--data-file", default="charity_names.json", help="Location of charity data file")
+    p.add("-f", "--data-file", default="charity_names.json.gz", help="Location of charity data file")
     
     options = p.parse_args()
     

@@ -10,6 +10,7 @@ import titlecase
 import json
 import configargparse
 import re
+import gzip
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -116,7 +117,7 @@ def get_json(data_json):
         except:
             print(line, ' not converted')
 
-    with open(data_json, 'w+') as json_file:
+    with gzip.open(data_json, 'w+') as json_file:
         json.dump(name_mapping, json_file, sort_keys=True, indent=4)
 
 if __name__ == '__main__':
@@ -124,7 +125,7 @@ if __name__ == '__main__':
     p.add('-c', '--my-config', required=True, default="example.cfg", is_config_file=True, help='config file path')
     
     # filename of charity data file
-    p.add("-f", "--data-file", default="charity_names.json", help="Location of charity data file")
+    p.add("-f", "--data-file", default="charity_names.json.gz", help="Location of charity data file")
     
     # filename of charity data file
     p.add("-u", "--data-url", default='http://data.charitycommission.gov.uk/default.aspx', help="URL of charity data")
