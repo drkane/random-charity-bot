@@ -23,7 +23,7 @@ class TwitterAPI:
 def get_charity_tweet(filename):
 
     with gzip.open(filename, "r") as c:
-        chars = json.load(c)
+        chars = json.load(c.decode('utf-8'))
         regno = random.choice(list(chars.keys()))
         char = chars[regno]
 
