@@ -1,1 +1,1 @@
-bot: python random-charity-bot.py --consumer-key $consumer-key --consumer-secret $consumer-secret --access-token $access-token --access-token-secret $access-token-secret --sleep $sleep
+bot: python random-charity-bot.py --consumer-key $CONSUMER_KEY --consumer-secret $CONSUMER_SECRET --access-token $ACCESS_TOKEN --access-token-secret $ACCESS_TOKEN_SECRET --sleep $SLEEP
