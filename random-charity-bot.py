@@ -23,7 +23,8 @@ class TwitterAPI:
 def get_charity_tweet(filename):
 
     with gzip.open(filename, "r") as c:
-        chars = json.load(c.decode('utf-8'))
+        json_text = c.read()
+        chars = json.loads(json_text.decode('utf-8'))
         regno = random.choice(list(chars.keys()))
         char = chars[regno]
 
@@ -51,6 +52,8 @@ if __name__ == "__main__":
     
     # filename of charity data file
     p.add("-f", "--data-file", default="charity_names.json.gz", help="Location of charity data file")
+    
+    p.add("--debug", action='store_true', help="Debug mode (doesn't actually tweet)")
 
     is_heroku = os.environ.get('IS_HEROKU', None)
     if is_heroku:
@@ -72,7 +75,8 @@ if __name__ == "__main__":
     
     while True:
         tweet = get_charity_tweet( options.data_file )
-        twitter.tweet(tweet)
+        if not options.debug:
+            twitter.tweet(tweet)
         print("{:%Y-%m-%d %H:%M:%S}: {tweet}".format(datetime.now(), tweet=tweet) )
         time.sleep(options.sleep)
 
