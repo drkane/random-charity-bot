@@ -1,6 +1,14 @@
 # Random Charity Bot
 
-Twitter bot that tweets the name and website of a random charity
+Twitter bot that tweets the name and website of a random charity. The data is based on the
+register held by the Charity Commission for England and Wales, [released as open data](http://data.charitycommission.gov.uk/).
+
+The bot randomly selects an active charity from the register, and tweets it. If the website
+of the charity is known it tweets that too, otherwise it gives a link to the official register
+entry for that charity.
+
+This bot isn't affiliated with the Charity Commission, and gives no endorsement of the charities
+tweeted.
 
 Load data
 ---------
@@ -44,6 +52,14 @@ Where `config.cfg` is the path to your configuration file. You can also add indi
     python random_charity_bot.py -c config.cfg --sleep 3600
   
 (This would set the time between tweets to one hour)
+
+Possible future development
+---------------------------
+
+- include Scottish & Northern Irish charities
+- regional/sector version
+- boost larger charities in random search to show more household names
+- lookup twitter account and use that handle (eg <opencharities.org> has data)
 
 Credits
 -------
