@@ -1,2 +1,1 @@
-data: python fetch_charity_data.py
 bot: python random-charity-bot.py --consumer-key $consumer-key --consumer-secret $consumer-secret --access-token $access-token --access-token-secret $access-token-secret --sleep $sleep
