@@ -1,3 +1,4 @@
+from __future__ import print_function
 import random
 import json
 import os
@@ -32,6 +33,9 @@ def get_charity_tweet(filename):
         # @todo - make this a bit more robust
         if char["website"][0:4]!="http":
             char["website"] = "http://" + char["website"]
+        
+        chars = None
+        json_text = None
         
         # return the tweet format
         return "{name} [{regno}] {website}".format(name=char["title"], regno=regno, website=char["website"])
@@ -76,7 +80,10 @@ if __name__ == "__main__":
     while True:
         tweet = get_charity_tweet( options.data_file )
         if not options.debug:
-            twitter.tweet(tweet)
+            try:
+                twitter.tweet(tweet)
+            except tweepy.error.TweepError:
+                continue
         print("{:%Y-%m-%d %H:%M:%S}: {tweet}".format(datetime.now(), tweet=tweet) )
         time.sleep(options.sleep)
 
