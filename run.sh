@@ -1,0 +1,1 @@
+nohup /srv/miniconda3/bin/python random-charity-bot.py -c config.cfg &
