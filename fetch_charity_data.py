@@ -30,7 +30,7 @@ def title_exceptions(word, **kwargs):
     if word_test.upper() in ['UK', 'FM', 'YMCA', 'PTA', 'PTFA', 
             'NHS', 'CIO', 'U3A', 'RAF', 'PFA', 'ADHD', 
             'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 
-            'AFC', 'CE'
+            'AFC', 'CE', 'CIC'
         ]:
         return word.upper()
         
@@ -49,6 +49,9 @@ def title_exceptions(word, **kwargs):
         if(len(dots)>1):
             # check for possesive apostrophes
             if s=="'" and dots[-1].upper()=="S":
+                return s.join( [titlecase.titlecase( i, title_exceptions ) for i in dots[:-1]] + [dots[-1].lower()] )
+            # check for you're and other contractions
+            if word_test.upper() in ["YOU'RE","DON'T","HAVEN'T"]:
                 return s.join( [titlecase.titlecase( i, title_exceptions ) for i in dots[:-1]] + [dots[-1].lower()] )
             return s.join( [titlecase.titlecase( i, title_exceptions ) for i in dots] )
         

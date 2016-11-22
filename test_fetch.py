@@ -30,6 +30,7 @@ def test_titlecase():
         "The Drs Hady Bayoumi & Rashida Mangera Charitable Trust",
         "KT's Fund",
         "St Michaels CE (VC) Combined School Fund",
+        "You're the Outdoors 4 Today Onwards and Fairfield Voice CIC",
     ]
     
     for n in names:
