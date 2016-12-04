@@ -121,11 +121,12 @@ def get_json(data_json):
             print(line, ' not converted')
 
     with gzip.open(data_json, 'w+') as json_file:
-        json.dump(name_mapping, json_file, sort_keys=True, indent=4)
+        json_str = json.dumps(name_mapping, sort_keys=True, indent=4)
+        json_file.write( json_str.encode("utf-8") )
 
 if __name__ == '__main__':
     p = configargparse.ArgParser(ignore_unknown_config_file_keys=True)
-    p.add('-c', '--my-config', required=True, default="example.cfg", is_config_file=True, help='config file path')
+    p.add('-c', '--my-config', default="example.cfg", is_config_file=True, help='config file path')
     
     # filename of charity data file
     p.add("-f", "--data-file", default="charity_names.json.gz", help="Location of charity data file")
