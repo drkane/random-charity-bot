@@ -9,4 +9,4 @@ __pycache__/
 ev
 nohup.out
 *.gz
-charity_names.json.gz
+env/
