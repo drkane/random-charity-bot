@@ -31,6 +31,7 @@ def test_titlecase():
         "KT's Fund",
         "St Michaels CE (VC) Combined School Fund",
         "You're the Outdoors 4 Today Onwards and Fairfield Voice CIC",
+        "1st Lytham St Annes (St Cuthbert's) Scout Group"
     ]
     
     for n in names:
