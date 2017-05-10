@@ -25,24 +25,24 @@ def title_exceptions(word, **kwargs):
     # lowercase words
     if word_test.lower() in ['a', 'an', 'of', 'the', 'is', 'or']:
         return word.lower()
-        
+
     # uppercase words
-    if word_test.upper() in ['UK', 'FM', 'YMCA', 'PTA', 'PTFA', 
-            'NHS', 'CIO', 'U3A', 'RAF', 'PFA', 'ADHD', 
-            'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 
+    if word_test.upper() in ['UK', 'FM', 'YMCA', 'PTA', 'PTFA',
+            'NHS', 'CIO', 'U3A', 'RAF', 'PFA', 'ADHD',
+            'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI',
             'AFC', 'CE', 'CIC'
         ]:
         return word.upper()
-        
+
     # words with only vowels that aren't all uppercase
     if word_test.lower() in ['st','mr','mrs','ms','ltd','dr','cwm','clwb','drs']:
         return None
-        
+
     # words with number ordinals
     ord_numbers_re = re.compile("([0-9]+(?:st|nd|rd|th))")
     if bool(ord_numbers_re.search(word_test.lower())):
         return word.lower()
-    
+
     # words with dots/etc in the middle
     for s in [".", "'", ")"]:
         dots = word.split(s)
@@ -54,12 +54,12 @@ def title_exceptions(word, **kwargs):
             if word_test.upper() in ["YOU'RE","DON'T","HAVEN'T"]:
                 return s.join( [titlecase.titlecase( i, title_exceptions ) for i in dots[:-1]] + [dots[-1].lower()] )
             return s.join( [titlecase.titlecase( i, title_exceptions ) for i in dots] )
-        
+
     # words with only vowels in (treat as acronyms)
     vowels = re.compile("[AEIOUYaeiouy]")
     if not bool(vowels.search(word_test)):
         return word.upper()
-    
+
     return None
 
 class getFirstExtractFile(HTMLParser):
@@ -99,7 +99,7 @@ def get_json(data_json):
     zipped_data = zipfile.ZipFile(latest_zip_file, 'r')
 
     name_mapping = {}
-    
+
     # get names
     csv_text = convert(zipped_data.open('extract_charity.bcp').read()).decode('latin_1')
     csv_text = csv_text.replace('\0', '')
@@ -109,7 +109,7 @@ def get_json(data_json):
                 "title": titlecase.titlecase(line[2].strip(), title_exceptions) ,
                 "website": 'http://beta.charitycommission.gov.uk/charity-details/?regid=' + line[0] + '&subid=0'
             }
-    
+
     # get websites
     csv_text = convert(zipped_data.open('extract_main_charity.bcp').read()).decode('latin_1')
     csv_text = csv_text.replace('\0', '')
@@ -127,15 +127,15 @@ def get_json(data_json):
 if __name__ == '__main__':
     p = configargparse.ArgParser(ignore_unknown_config_file_keys=True)
     p.add('-c', '--my-config', default="example.cfg", is_config_file=True, help='config file path')
-    
+
     # filename of charity data file
     p.add("-f", "--data-file", default="charity_names.json.gz", help="Location of charity data file")
-    
+
     # filename of charity data file
     p.add("-u", "--data-url", default='http://data.charitycommission.gov.uk/default.aspx', help="URL of charity data")
-    
+
     options = p.parse_args()
-    
+
     # action
     #download_latest_file(options.data_url)
     get_json(options.data_file)
