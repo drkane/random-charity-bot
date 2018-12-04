@@ -3,7 +3,6 @@ import time
 from datetime import datetime
 import tweepy
 import configargparse
-import gzip
 import requests
 
 # connect to twitter API and tweet
@@ -25,31 +24,43 @@ def get_charity_tweet(url):
     if r.status_code == requests.codes.ok:
         char_data = r.json()
         char = {
-            "title": char_data["known_as"]
+            "title": char_data["known_as"],
+            "income": ""
         }
 
         if char_data.get("ccew_number"):
-            regno = char_data["ccew_number"]
-            char["website"] = 'http://beta.charitycommission.gov.uk/charity-details/?regid={}&subid=0'.format(regno)
+            char["regno"] = char_data["ccew_number"]
+            char["website"] = 'http://beta.charitycommission.gov.uk/charity-details/?regid={}&subid=0'.format(char["regno"])
             char["title"] = char["title"]
         elif char_data.get("ccni_number"):
-            regno = "NIC{}".format(char_data["ccni_number"].replace("NIC", ""))
+            char["regno"] = "NIC{}".format(char_data["ccni_number"].replace("NIC", ""))
             char["website"] = char_data["ccni_link"]
         elif char_data.get("oscr_number"):
-            regno = char_data["oscr_number"]
+            char["regno"] = char_data["oscr_number"]
             char["website"] = char_data["oscr_link"]
 
+        if char_data["latest_income"]:
+            if char_data["latest_income"] > 1000000000:
+                income = "{:,.1f}bn".format(char_data["latest_income"] / 1000000000)
+            elif char_data["latest_income"] > 1000000:
+                income = "{:,.1f}m".format(char_data["latest_income"] / 1000000)
+            elif char_data["latest_income"] > 100000:
+                income = "{:,.0f}k".format(char_data["latest_income"] / 1000)
+            else:
+                income = "{:,.0f}".format(char_data["latest_income"])
+            char["income"] = " (Latest income: £{})".format(income)
 
+        # if a website exists then use it
         if char_data["url"] and char_data["url"] != "":
             char["website"] = char_data["url"]
 
         # correct common misformed URL in websites
         # @todo - make this a bit more robust
-        if char["website"][0:4]!="http":
+        if char["website"][0:4] != "http":
             char["website"] = "http://" + char["website"]
 
         # return the tweet format
-        return "{name} [{regno}] {website}".format(name=char["title"], regno=regno, website=char["website"])
+        return "{title} [{regno}] {website}{income}".format(**char)
 
 if __name__ == "__main__":
 
@@ -66,7 +77,7 @@ if __name__ == "__main__":
     p.add('-s', '--sleep', default=3600, type=int, help='Time to sleep between tweets (in seconds - default is one hour)')
 
     # filename of charity data file
-    p.add("-u", "--url", default="http://localhost:8080/random.json?active", help="Location of charity data url")
+    p.add("-u", "--url", default="http://findthatcharity.uk/random.json?active", help="Location of charity data url")
 
     p.add("--debug", action='store_true', help="Debug mode (doesn't actually tweet)")
 
@@ -80,7 +91,8 @@ if __name__ == "__main__":
     while True:
         try:
             tweet = get_charity_tweet(options.url)
-        except:
+        except Exception as e:
+            print(e)
             continue
         if not options.debug:
             try:
