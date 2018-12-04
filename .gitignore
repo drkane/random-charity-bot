@@ -10,3 +10,4 @@ ev
 nohup.out
 *.gz
 env/
+.vscode/
